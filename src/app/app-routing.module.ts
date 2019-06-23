@@ -28,7 +28,7 @@ const routes: Routes = [
   {path: 'delivery', component: DeliveryComponent},
   {path: 'returns', component: ReturnsComponent},
   {path: 'terms', component: TermsConditionsComponent},
-  {path: 'checkout', component: CheckoutComponent},
+  {path: 'checkout', component: CheckoutComponent, canActivate: [AuthGuard]},
   {path: 'wishlist', component: WishlistComponent},
   {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard]},
 
