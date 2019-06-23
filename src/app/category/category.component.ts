@@ -1,5 +1,5 @@
 import {Component, Directive, OnInit} from '@angular/core';
-import { DataService } from '../data.service';
+import { DataService } from '../Services/data.service';
 import { ActivatedRoute } from '@angular/router';
 import { Item } from '../Models/item.model';
 
@@ -22,6 +22,17 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit() {
     // retrieving items for selected category
+    // if sale is selected, fetch sale items
+    if (this.categoryName === 'sale') {
+      this.data.retrieve_sale_items().subscribe(res => {
+        console.log(res);
+        this.items = res;
+      });
+      return;
+    }
+
+
+
     this.data.retrieve_items_for_category(this.categoryName).subscribe(res => {
       this.items = res;
     });

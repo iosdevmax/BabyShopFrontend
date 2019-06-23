@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +19,10 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { TermsConditionsComponent } from './terms-conditions/terms-conditions.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { ReturnsComponent } from './returns/returns.component';
+import { MyAccountComponent } from './my-account/my-account.component';
+import {JwtInterceptor} from './Services/jwt.interceptor';
+import {ErrorInterceptor} from './Services/error.interceptor';
+import {AlertComponent} from './Alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -35,14 +40,21 @@ import { ReturnsComponent } from './returns/returns.component';
     AboutUsComponent,
     TermsConditionsComponent,
     DeliveryComponent,
-    ReturnsComponent
+    ReturnsComponent,
+    MyAccountComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

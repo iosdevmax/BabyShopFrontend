@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import { DataService } from '../data.service';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import { DataService } from '../Services/data.service';
 import {ActivatedRoute, Data} from '@angular/router';
 import { Item } from '../Models/item.model';
+import {log} from 'util';
 
 @Component({
   selector: 'app-product',
@@ -17,7 +18,8 @@ export class ProductComponent implements OnInit {
 
   ngOnInit() {
     this.product = history.state.data;
-    console.log(this.product.sizes);
+    localStorage.setItem( 'product', JSON.stringify(this.product));
+
   }
 
   checkIfDisabled(value: number, key: string) {

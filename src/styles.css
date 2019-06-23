@@ -265,7 +265,7 @@ ol {
 }
 
 .accordion-area .panel-link {
-  background-image: url("./assets/img/arrow-down.png");
+  /*background-image: url("./assets/img/arrow-down.png");*/
   background-repeat: no-repeat;
   background-position: right 10px top 30px;
 }

@@ -29,6 +29,7 @@
     "font-awesome": "^4.7.0",
     "owl.carousel": "^2.3.4",
     "rxjs": "^6.5.2",
+    "slider-carousel": "^1.0.1",
     "tslib": "^1.9.0",
     "zone.js": "^0.9.1"
   },

@@ -19,7 +19,13 @@
           <div class="user-panel">
             <div class="up-item">
               <i class="flaticon-profile"></i>
-              <a routerLink="/login">Sign</a> In or <a routerLink="/login">Create Account</a>
+              <a id="not-logged" routerLink="/login">Sign In or Create Account</a>
+
+              <div id="logged-in">
+                <a routerLink="/my-account">Hi, {{email}}</a>
+                <a (click)="logout()">Log out</a>
+              </div>
+
             </div>
             <div class="up-item">
               <div class="shopping-card">
@@ -38,7 +44,7 @@
       <!-- menu -->
       <ul class="main-menu">
         <li><a href="#">Home</a></li>
-        <li><a routerLink="/category">Sale
+        <li><a routerLink="/category/sale">Sale
           <span class="new">New</span>
         </a></li>
         <li><a routerLink="/category/{{clothing}}">Clothing</a></li>

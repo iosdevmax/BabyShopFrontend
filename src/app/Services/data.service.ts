@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
-import {Item} from './Models/item.model';
+import {Item} from '../Models/item.model';
 import {element} from 'protractor';
 
 // const url = 'https://babyshop-43300.firebaseapp.com/api';
@@ -26,6 +26,10 @@ export class DataService {
 
   retrieve_items_for_category(category: string): Observable<any> {
     return this.http.get(url + '/catalog/categories/' + category).pipe(map(res => this.items = res));
+  }
+
+  retrieve_sale_items(): Observable<any> {
+    return this.http.get(url + '/catalog/sale').pipe(map(res => this.items = res));
   }
 
   getItemById(id: string) {

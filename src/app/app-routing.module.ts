@@ -13,6 +13,8 @@ import {ReturnsComponent} from './returns/returns.component';
 import {TermsConditionsComponent} from './terms-conditions/terms-conditions.component';
 import {CheckoutComponent} from './checkout/checkout.component';
 import {WishlistComponent} from './wishlist/wishlist.component';
+import {MyAccountComponent} from './my-account/my-account.component';
+import {AuthGuard} from './Services/auth.guard';
 
 const routes: Routes = [
   {path: '', component: StartingPageComponent},
@@ -27,7 +29,12 @@ const routes: Routes = [
   {path: 'returns', component: ReturnsComponent},
   {path: 'terms', component: TermsConditionsComponent},
   {path: 'checkout', component: CheckoutComponent},
-  {path: 'wishlist', component: WishlistComponent}
+  {path: 'wishlist', component: WishlistComponent},
+  {path: 'my-account', component: MyAccountComponent, canActivate: [AuthGuard]},
+
+  // redirect to home
+  {path: '**', redirectTo: ''}
+
 ];
 
 @NgModule({

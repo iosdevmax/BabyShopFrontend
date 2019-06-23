@@ -13,7 +13,8 @@
     <h4>Category PAge</h4>
     <div class="site-pagination">
       <a href="">Home</a> /
-      <a href="">Shop</a>
+      <a href="">Catalog</a> /
+      <a routerLink="/category/{{product.cat}}">{{product.cat}}</a>
     </div>
   </div>
 </div>
@@ -40,6 +41,7 @@
           </div>
         </div>
       </div>
+
       <div class="col-lg-6 product-details">
         <h2 class="p-title">{{product.n}}</h2>
         <h3 class="p-price">€{{product.pr}}</h3>
@@ -76,7 +78,7 @@
         <div id="accordion" class="accordion-area">
           <div class="panel">
             <div class="panel-header" id="headingOne">
-              <button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">information</button>
+              <button class="panel-link" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">information</button>
             </div>
             <div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="panel-body">
@@ -89,23 +91,11 @@
           </div>
           <div class="panel">
             <div class="panel-header" id="headingTwo">
-              <button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">care details </button>
+              <button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="collapse2">care details </button>
             </div>
-            <div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div id="collapse2" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
               <div class="panel-body">
                 <img src="./assets/img/cards.png" alt="">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
-              </div>
-            </div>
-          </div>
-          <div class="panel">
-            <div class="panel-header" id="headingThree">
-              <button class="panel-link" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">shipping & Returns</button>
-            </div>
-            <div id="collapse3" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-              <div class="panel-body">
-                <h4>7 Days Returns</h4>
-                <p>Cash on Delivery Available<br>Home Delivery <span>3 - 4 days</span></p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
               </div>
             </div>
