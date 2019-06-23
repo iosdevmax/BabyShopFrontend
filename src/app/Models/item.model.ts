@@ -11,4 +11,8 @@ export interface Item {
   ph: [string];
   // item types: sale, new
   tp: [any];
+  // item's category
+  cat: string;
+  // item sizes and quantity
+  sizes: any;
 }

@@ -151,7 +151,7 @@
 
           <div *ngFor="let item of items; let i = index" class="col-lg-4 col-sm-6">
             <div class="product-item">
-              <a routerLink="/product/{{item.id}}">
+              <a routerLink="/product/{{item.n}}" [state]="{data : item}">
               <div class="pi-pic">
                 <div id="itemTypeLabel{{i}}">{{testFunction(item, i)}}</div>
                 <!--<img src="../assets/img/product/6.jpg" alt="">-->
