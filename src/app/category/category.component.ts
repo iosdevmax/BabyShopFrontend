@@ -1,6 +1,6 @@
 import {Component, Directive, OnInit} from '@angular/core';
 import { DataService } from '../Services/data.service';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Item } from '../Models/item.model';
 import {element} from 'protractor';
 import {SharedService} from '../Services/shared.service';
@@ -20,7 +20,7 @@ export class CategoryComponent implements OnInit {
 
   constructor(private router: ActivatedRoute,
               private data: DataService,
-              private shared: SharedService) {
+              private shared: SharedService, private rout: Router) {
     this.router.params.subscribe(params => {
       this.categoryName = params.catName;
     });
@@ -43,6 +43,9 @@ export class CategoryComponent implements OnInit {
 
   }
 
+  navigateToProductDetails(item: Item) {
+    this.rout.navigate(['/product/' + item.id]);
+  }
 
   setSaleAndNewLabels(item: Item, index: number) {
 

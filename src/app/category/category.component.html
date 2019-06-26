@@ -153,7 +153,7 @@
           <div *ngFor="let item of items; let i = index" class="col-lg-4 col-sm-6">
             <div class="product-item">
 
-              <div class="pi-pic">
+              <div class="pi-pic" (click)="navigateToProductDetails(item)">
                 <!--<a routerLink="/product/{{item.id}}">-->
 
                 <div id="itemTypeLabel{{i}}">{{setSaleAndNewLabels(item, i)}}</div>
@@ -161,7 +161,7 @@
                 <img src="{{item.ph[0]}}" alt="" >
                 <div class="pi-links">
                   <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                  <a class="wishlist-btn"><i id="wishlist-icon-{{i}}" class="flaticon-heart" (click)="addToWishlist(item, i)">{{setWishlistIcons(item, i)}}</i></a>
+                  <a class="wishlist-btn"><i id="wishlist-icon-{{i}}" class="flaticon-heart" (click)="addToWishlist(item, i); $event.stopPropagation()">{{setWishlistIcons(item, i)}}</i></a>
                 </div>
 
                 <!--</a>-->

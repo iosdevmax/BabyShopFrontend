@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {DataService} from '../Services/data.service';
 import {SharedService} from '../Services/shared.service';
 import {Item} from '../Models/item.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-wishlist',
@@ -13,7 +14,7 @@ export class WishlistComponent implements OnInit {
   wishlistItems: Array<Item>;
 
   constructor(private data: DataService,
-              private shared: SharedService) {
+              private shared: SharedService, private rout: Router) {
     this.data.retrieve_wishlisted_items().subscribe(items => {
       this.wishlistItems = items;
       // updating local storage with up-to-date info
@@ -24,6 +25,10 @@ export class WishlistComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  navigateToProductDetails(item: Item) {
+    this.rout.navigate(['/product/' + item.id]);
   }
 
   removeFromWishlist(item: Item, index: number) {

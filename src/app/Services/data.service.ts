@@ -26,6 +26,8 @@ export class DataService {
   private selectedItem: any;
   private wishlisted: any;
   private wishlisteItems: any;
+  private inCartItems: any;
+  private cartItems: any;
 
   constructor(private http: HttpClient) { }
 
@@ -41,12 +43,28 @@ export class DataService {
     return this.http.get(shopURL + '/item/' + id).pipe(map(res => this.selectedItem = res));
   }
 
+  // *******************
+  // wishlist methods
+  // *******************
+
   add_remove_to_wishlist(item: Item): Observable<any> {
     return this.http.put(userURL + '/wishlist/' + item.id, {}).pipe(map(res => this.wishlisted = res));
   }
 
   retrieve_wishlisted_items(): Observable<any> {
     return this.http.get(userURL + '/wishlist').pipe(map(res => this.wishlisteItems = res));
+  }
+
+  // *******************
+  // cart methods
+  // *******************
+
+  add_remove_to_cart(item: Item): Observable<any> {
+    return this.http.put(userURL + '/cart/' + item.id, {}).pipe(map( res => this.inCartItems = res));
+  }
+
+  retrieve_cart_items(): Observable<any> {
+    return this.http.get(userURL + '/cart').pipe(map(res => this.cartItems = res));
   }
 
 }
