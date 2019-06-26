@@ -1,0 +1,13 @@
+.wishlist-btn {
+
+}
+
+.wishlist-btn:hover {
+  /*background-color: red;*/
+  cursor: pointer;
+}
+
+.wishlist-btn .flaticon-heart:hover {
+  transform: scale(1.3);
+  color: red;
+}

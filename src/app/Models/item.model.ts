@@ -15,4 +15,6 @@ export interface Item {
   cat: string;
   // item sizes and quantity
   sizes: any;
+  // list of user Ids that wishlisted the item
+  ws: any;
 }

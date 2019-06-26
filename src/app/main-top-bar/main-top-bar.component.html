@@ -17,16 +17,30 @@
         </div>
         <div class="col-xl-4 col-lg-5">
           <div class="user-panel">
+
+            <!--Log in / Sign up Button-->
+
             <div class="up-item">
               <i class="flaticon-profile"></i>
               <a id="not-logged" routerLink="/login">Sign In or Create Account</a>
-
               <div id="logged-in">
                 <a routerLink="/my-account">Hi, {{email}}</a>
                 <a (click)="logout()">Log out</a>
               </div>
-
             </div>
+
+            <!--Wishlist button-->
+
+            <div class="up-item">
+              <div class="shopping-card">
+                <a routerLink="/wishlist">
+                  <i class="flaticon-heart"></i>
+                  <span id="wishcount">0</span>
+                </a>
+              </div>
+            </div>
+
+            <!--Cart button-->
             <div class="up-item">
               <div class="shopping-card">
                 <i class="flaticon-bag"></i>
@@ -34,6 +48,7 @@
               </div>
               <a routerLink="/cart">Shopping Cart</a>
             </div>
+
           </div>
         </div>
       </div>

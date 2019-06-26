@@ -152,17 +152,22 @@
 
           <div *ngFor="let item of items; let i = index" class="col-lg-4 col-sm-6">
             <div class="product-item">
-              <a routerLink="/product/{{item.n}}" [state]="{data : item}">
+
               <div class="pi-pic">
-                <div id="itemTypeLabel{{i}}">{{testFunction(item, i)}}</div>
+                <!--<a routerLink="/product/{{item.id}}">-->
+
+                <div id="itemTypeLabel{{i}}">{{setSaleAndNewLabels(item, i)}}</div>
                 <!--<img src="../assets/img/product/6.jpg" alt="">-->
                 <img src="{{item.ph[0]}}" alt="" >
                 <div class="pi-links">
                   <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                  <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                  <a class="wishlist-btn"><i id="wishlist-icon-{{i}}" class="flaticon-heart" (click)="addToWishlist(item, i)">{{setWishlistIcons(item, i)}}</i></a>
                 </div>
+
+                <!--</a>-->
+
               </div>
-              </a>
+
               <div class="pi-text">
                 <h6>€{{item.pr}}</h6>
                 <p>{{item.n}}</p>

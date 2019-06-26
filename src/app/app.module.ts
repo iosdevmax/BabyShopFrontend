@@ -23,6 +23,7 @@ import { MyAccountComponent } from './my-account/my-account.component';
 import {JwtInterceptor} from './Services/jwt.interceptor';
 import {ErrorInterceptor} from './Services/error.interceptor';
 import {AlertComponent} from './Alert/alert.component';
+import {SharedService} from './Services/shared.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {AlertComponent} from './Alert/alert.component';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    SharedService
     ],
   bootstrap: [AppComponent]
 })

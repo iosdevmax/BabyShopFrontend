@@ -13,12 +13,21 @@ export class ProductComponent implements OnInit {
 
   product: Item;
   selectedSize: any;
+  productId: string;
 
-  constructor(private data: DataService, private router: ActivatedRoute) { }
+  constructor(private data: DataService, private router: ActivatedRoute) {
+    this.router.params.subscribe(params => {
+      this.productId = params.productid;
+      console.log('PARAMS ID - ' + params.productid);
+    });
+  }
 
   ngOnInit() {
-    this.product = history.state.data;
-    localStorage.setItem( 'product', JSON.stringify(this.product));
+
+    this.data.retrieve_item_by_id(this.productId).subscribe(res => {
+      this.product = res;
+      console.log('product - ' + res);
+    });
 
   }
 

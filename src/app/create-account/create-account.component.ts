@@ -4,6 +4,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../Services/auth.service';
 import {AlertService} from '../Services/alert.service';
 import {first} from 'rxjs/operators';
+import {DataService} from '../Services/data.service';
+import {error} from 'selenium-webdriver';
+import {SharedService} from '../Services/shared.service';
+import {__await} from 'tslib';
 
 @Component({
   selector: 'app-create-account',
