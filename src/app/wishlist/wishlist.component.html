@@ -19,9 +19,31 @@
 </div>
 <!-- Page info end -->
 
-<p>
-  Wishlist works!
-</p>
+<div class="row">
+  <div *ngFor="let item of wishlistItems; let i = index" class="col-lg-4 col-sm-6">
+    <div class="product-item">
+
+      <div class="pi-pic">
+        <!--<a routerLink="/product/{{item.id}}">-->
+
+        <!--<img src="../assets/img/product/6.jpg" alt="">-->
+        <img src="{{item.ph[0]}}" alt="" >
+        <div class="pi-links">
+          <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+          <a class="wishlist-btn"><i class="flaticon-cancel" (click)="removeFromWishlist(item, i)"></i></a>
+        </div>
+
+        <!--</a>-->
+
+      </div>
+
+      <div class="pi-text">
+        <h6>€{{item.pr}}</h6>
+        <p>{{item.n}}</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <app-footer-section></app-footer-section>
 
