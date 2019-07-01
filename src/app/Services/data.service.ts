@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import {Item} from '../Models/item.model';
 import {element} from 'protractor';
+import {Convertedsize} from '../Models/convertedsize.model';
+import {OrderItem} from '../Models/order-item.model';
 
 const shopURL = 'https://babyshop-43300.firebaseapp.com/api/catalog';
 const userURL = 'https://babyshop-43300.firebaseapp.com/api/user';
@@ -28,7 +30,7 @@ export class DataService {
   private wishlisted: any;
   private wishlisteItems: any;
   private inCartItems: any;
-  private cartItems: any;
+  private cartItems: Array<OrderItem>;
   private userdata: any;
 
   private updateQtyResponse: any;
@@ -63,12 +65,12 @@ export class DataService {
   // cart methods
   // *******************
 
-  add_remove_to_cart(item: Item): Observable<any> {
-    return this.http.put(cartURL + '/' + item.id, {}).pipe(map( res => this.inCartItems = res));
+  add_item_to_cart(itemId: string, size: Convertedsize): Observable<any> {
+    return this.http.put(cartURL + '/' + itemId, {[size.label] : size.quantity}).pipe(map( res => this.inCartItems = res));
   }
 
-  retrieve_cart_items(): Observable<any> {
-    return this.http.get(cartURL + '/data').pipe(map(res => this.cartItems = res));
+  retrieve_cart_items(): Observable<Array<OrderItem>> {
+    return this.http.get<Array<OrderItem>>(cartURL + '/data').pipe(map(res => this.cartItems = res));
   }
 
   update_item_quantity(itemId: string, size: string, qty: number): Observable<any> {

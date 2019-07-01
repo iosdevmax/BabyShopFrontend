@@ -41,7 +41,16 @@ export class ProductComponent implements OnInit {
 
   }
 
-  convertSizeIntoReadableFormat(sizes: any) {
+  addItemToCart() {
+    this.data.add_item_to_cart(this.product.id, this.selectedSize).subscribe(success => {
+      console.log('Item in the cart!');
+    }, error1 => {
+      console.log('Failed to add item');
+    });
+
+  }
+
+  private convertSizeIntoReadableFormat(sizes: any) {
     const arrayOfSizes = [];
     Object.keys(sizes).forEach(key => {
       const value = sizes[key];

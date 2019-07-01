@@ -33,12 +33,12 @@
               <tr>
                 <th class="product-th">Product</th>
                 <th class="quy-th">Quantity</th>
-                <th class="size-th">SizeSize</th>
+                <th class="size-th">Size</th>
                 <th class="total-th">Price</th>
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let item of cartItems; let i = index">
+              <tr *ngFor="let item of cartItems; let i = index; trackBy: trackByItems">
                 <td class="product-col">
                   <img src="{{item.item.ph[0]}}" alt="">
                   <div class="pc-title">
@@ -55,15 +55,16 @@
                     </div>
                   </div>
                 </td>
-                <td class="size-col"><h4>{{item.size}}</h4></td>
-                <td class="total-col"><h4>€{{item.item.pr}}</h4></td>
+                <td class="size-col"><h4>{{convertedSize(item.size)}}</h4></td>
+                <td class="total-col"><h4>€{{item.item.pr * item.quantity}}</h4></td>
+                <td><a (click)="removeItemFromCart(item.item)"><i class="flaticon-cancel"></i></a></td>
               </tr>
               </tbody>
             </table>
           </div>
 
           <div class="total-cost">
-            <h6>Total <span>$99.90</span></h6>
+            <h6>Total <span>€{{calculateTotalCost()}}</span></h6>
           </div>
         </div>
       </div>
