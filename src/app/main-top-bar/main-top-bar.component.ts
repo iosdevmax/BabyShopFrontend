@@ -15,7 +15,7 @@ export class MainTopBarComponent implements OnInit {
   nursery = 'Nursery';
 
   currentUser: User;
-  email = '';
+  username = '';
 
 
   constructor(private router: Router, private auth: AuthService, private shared: SharedService) {
@@ -39,11 +39,10 @@ export class MainTopBarComponent implements OnInit {
 
 
     if (this.currentUser) {
-      this.email = this.currentUser.email;
       notLogged.style.display = 'none';
       loggedDiv.style.display = 'block';
     } else {
-      this.email = '';
+      this.username = '';
       // notLogged.style.display = 'block';
       loggedDiv.style.display = 'none';
     }
@@ -56,6 +55,7 @@ export class MainTopBarComponent implements OnInit {
       }
       this.setWishSpanWithData(value);
     });
+
   }
 
   setWishSpanWithData(value: number) {

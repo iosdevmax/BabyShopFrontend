@@ -33,6 +33,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
     }, error => {
       console.log(error);
     });
+
   }
 
   ngOnInit() {

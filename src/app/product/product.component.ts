@@ -3,6 +3,7 @@ import { DataService } from '../Services/data.service';
 import {ActivatedRoute, Data} from '@angular/router';
 import { Item } from '../Models/item.model';
 import {log} from 'util';
+import {Convertedsize} from '../Models/convertedsize.model';
 
 @Component({
   selector: 'app-product',
@@ -12,23 +13,77 @@ import {log} from 'util';
 export class ProductComponent implements OnInit {
 
   product: Item;
-  selectedSize: any;
+  selectedSize: Convertedsize;
   productId: string;
+  loading = false;
+  convertedSizes: Array<Convertedsize>;
 
   constructor(private data: DataService, private router: ActivatedRoute) {
     this.router.params.subscribe(params => {
       this.productId = params.productid;
       console.log('PARAMS ID - ' + params.productid);
     });
+
   }
 
   ngOnInit() {
-
+    this.loading = true;
     this.data.retrieve_item_by_id(this.productId).subscribe(res => {
       this.product = res;
-      console.log('product - ' + res);
+      this.loading = false;
+
+      // need to convert sizes into readable format
+      const sizes = res.sizes;
+      this.convertSizeIntoReadableFormat(sizes);
+
+      console.log('product - ' + res.sizes);
     });
 
+  }
+
+  convertSizeIntoReadableFormat(sizes: any) {
+    const arrayOfSizes = [];
+    Object.keys(sizes).forEach(key => {
+      const value = sizes[key];
+      switch (key) {
+        case 'm0_3': {
+          const convertedSize = new Convertedsize(key, '0-3', value);
+          arrayOfSizes.push(convertedSize);
+          break;
+        }
+        case 'm3_6' : {
+          const convertedSize = new Convertedsize(key, '3-6', value);
+          arrayOfSizes.push(convertedSize);
+          break;
+        }
+        case 'm6_9' : {
+          const convertedSize = new Convertedsize(key, '6-9', value);
+          arrayOfSizes.push(convertedSize);
+          break;
+        }
+        case 'm9_12' : {
+          const convertedSize = new Convertedsize(key, '9-12', value);
+          arrayOfSizes.push(convertedSize);
+          break;
+        }
+        case 'm12_18' : {
+          const convertedSize = new Convertedsize(key, '12-18', value);
+          arrayOfSizes.push(convertedSize);
+          break;
+        }
+        case 'na' : {
+          const convertedSize = new Convertedsize(key, 'One size', value);
+          arrayOfSizes.push(convertedSize);
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+
+    });
+    arrayOfSizes.sort((a, b) => parseInt(a.displayLabel, 10) - parseInt(b.displayLabel, 10));
+    this.convertedSizes = arrayOfSizes;
   }
 
   checkIfDisabled(value: number, key: string) {
@@ -40,7 +95,7 @@ export class ProductComponent implements OnInit {
     }
   }
 
-  quantityChanged(size: any) {
+  quantityChanged(size: Convertedsize) {
     this.selectedSize = size;
     // resetting quantity value
     const input = document.getElementById('quantity-input') as HTMLInputElement;
@@ -57,7 +112,7 @@ export class ProductComponent implements OnInit {
 
     if (value) {
       // incrementing as per available quantity
-      if (num < this.selectedSize.value) {
+      if (num < this.selectedSize.quantity) {
         input.value = String(num + 1);
       }
     } else {

@@ -22,8 +22,13 @@
 
 
 <!-- product section -->
+
 <section class="product-section">
+  <div class="col-sm-12 text-center">
+    <img *ngIf="loading" src="./assets/img/my-spinner.gif" class="center-block"/>
+  </div>
   <div class="container">
+
     <div class="back-link">
       <a routerLink="/category/{{product.cat}}"> &lt;&lt; Back to Category</a>
     </div>
@@ -59,9 +64,9 @@
 
         <div class="fw-size-choose">
           <p>Size</p>
-          <div class="sc-item" id="divs-{{size.key}}" *ngFor="let size of product.sizes | keyvalue">
-            <input type="radio" name="sc" id="size-{{size.key}}" (change)="quantityChanged(size)">{{checkIfDisabled(size.value, size.key)}}
-            <label for="size-{{size.key}}">{{size.key}}</label>
+          <div class="sc-item" id="divs-{{size.label}}" *ngFor="let size of convertedSizes">
+            <input type="radio" name="sc" id="size-{{size.label}}" (change)="quantityChanged(size)">{{checkIfDisabled(size.quantity, size.label)}}
+            <label for="size-{{size.label}}">{{size.displayLabel}}</label>
           </div>
         </div>
 

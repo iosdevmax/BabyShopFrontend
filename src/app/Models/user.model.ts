@@ -7,4 +7,8 @@ export class User {
   refreshToken: string;
   // user email
   email: string;
+  // user first name
+  first: string;
+  // user last name
+  last: string;
 }

@@ -15,6 +15,7 @@ export class CategoryComponent implements OnInit {
 
   categoryName: string;
   items: Item[] = [];
+  loading = false;
 
   initialWishlistSetup = false;
 
@@ -29,8 +30,10 @@ export class CategoryComponent implements OnInit {
   ngOnInit() {
     // retrieving items for selected category
     // if sale is selected, fetch sale items
+    this.loading = true;
     if (this.categoryName === 'sale') {
       this.data.retrieve_sale_items().subscribe(res => {
+        this.loading = false;
         console.log(res);
         this.items = res;
       });
@@ -39,6 +42,7 @@ export class CategoryComponent implements OnInit {
 
     this.data.retrieve_items_for_category(this.categoryName).subscribe(res => {
       this.items = res;
+      this.loading = false;
     });
 
   }
@@ -102,8 +106,9 @@ export class CategoryComponent implements OnInit {
   }
 
   addToWishlist(item: Item, index: number) {
-
+    this.loading = true;
     this.data.add_remove_to_wishlist(item).subscribe(result => {
+      this.loading = false;
       const wishIcon = document.getElementById('wishlist-icon-' + index);
       const isAdded = result['wishlist'];
       if (isAdded) {

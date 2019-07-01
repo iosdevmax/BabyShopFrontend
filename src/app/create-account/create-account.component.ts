@@ -99,17 +99,15 @@ export class CreateAccountComponent implements OnInit {
     }
 
     this.loadingR = true;
-    // this.userService.register(this.registerForm.value)
-    //   .pipe(first())
-    //   .subscribe(
-    //     data => {
-    //       this.alertService.success('Registration successful', true);
-    //       this.router.navigate(['/login']);
-    //     },
-    //     error => {
-    //       this.alertService.error(error);
-    //       this.loading = false;
-    //     });
+    this.authenticationService.signup(this.fR.username.value, this.fR.password.value, this.fR.firstName.value, this.fR.lastName.value)
+      .pipe(first())
+      .subscribe( data => {
+        this.router.navigate([this.returnUrl]);
+      }, error1 => {
+        console.log(error1);
+        this.alertService.error(error1);
+        this.loading = false;
+      });
   }
 
 }

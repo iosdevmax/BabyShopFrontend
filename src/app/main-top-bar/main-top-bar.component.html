@@ -24,7 +24,7 @@
               <i class="flaticon-profile"></i>
               <a id="not-logged" routerLink="/login">Sign In or Create Account</a>
               <div id="logged-in">
-                <a routerLink="/my-account">Hi, {{email}}</a>
+                <a routerLink="/my-account">Hi, {{currentUser.first}}</a>
                 <a (click)="logout()">Log out</a>
               </div>
             </div>

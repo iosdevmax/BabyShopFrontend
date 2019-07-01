@@ -7,6 +7,7 @@ import {element} from 'protractor';
 
 const shopURL = 'https://babyshop-43300.firebaseapp.com/api/catalog';
 const userURL = 'https://babyshop-43300.firebaseapp.com/api/user';
+const cartURL = 'https://babyshop-43300.firebaseapp.com/api/cart';
 // const userURL = 'http://localhost:5000/api/user';
 
 const httpOptions = {
@@ -28,6 +29,9 @@ export class DataService {
   private wishlisteItems: any;
   private inCartItems: any;
   private cartItems: any;
+  private userdata: any;
+
+  private updateQtyResponse: any;
 
   constructor(private http: HttpClient) { }
 
@@ -60,11 +64,24 @@ export class DataService {
   // *******************
 
   add_remove_to_cart(item: Item): Observable<any> {
-    return this.http.put(userURL + '/cart/' + item.id, {}).pipe(map( res => this.inCartItems = res));
+    return this.http.put(cartURL + '/' + item.id, {}).pipe(map( res => this.inCartItems = res));
   }
 
   retrieve_cart_items(): Observable<any> {
-    return this.http.get(userURL + '/cart').pipe(map(res => this.cartItems = res));
+    return this.http.get(cartURL + '/data').pipe(map(res => this.cartItems = res));
   }
+
+  update_item_quantity(itemId: string, size: string, qty: number): Observable<any> {
+    return this.http.put(cartURL + '/qty/' + itemId, {[size] : qty}).pipe(map(res => this.updateQtyResponse = res));
+  }
+
+  // *******************
+  // user methods
+  // *******************
+
+  retrieve_user_data(): Observable<any> {
+    return this.http.get(userURL + '/data').pipe(map( res => this.userdata = res));
+  }
+
 
 }
