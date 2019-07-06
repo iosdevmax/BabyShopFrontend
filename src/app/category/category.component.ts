@@ -89,7 +89,15 @@ export class CategoryComponent implements OnInit {
       return;
     }
 
-    const currentUserId = JSON.parse(localStorage.getItem('currentUser')).userId;
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    // if current user object is null, it means the user hasn't logged into the website yet
+    // return, as we have no data for the wishlist yet
+    if (!currentUser) {
+      return;
+    }
+
+    const currentUserId = currentUser.userId;
     const userIds = item.ws;
     const wishIcon = document.getElementById('wishlist-icon-' + index);
 
@@ -136,6 +144,9 @@ export class CategoryComponent implements OnInit {
     this.shared.changeWishlistValue(currentCount);
   }
 
+  addToCart(item: Item, index: number) {
+
+  }
 
 
 }

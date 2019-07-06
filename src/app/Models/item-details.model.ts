@@ -1,16 +1,18 @@
 import {Size} from './size.model';
 
-export interface Item {
+export class ItemDetails {
   // item id
   id: string;
+  // item description
+  ds: string;
   // item name
   n: string;
   // item price
   pr: number;
-  // item photo
-  img: string;
   // item sale: discount percentage
   sl: number;
+  // item photos
+  ph: [string];
   // item types: sale, new
   tp: [string];
   // item's category

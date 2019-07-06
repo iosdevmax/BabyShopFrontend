@@ -5,6 +5,7 @@ import {AuthService} from '../Services/auth.service';
 import {AlertService} from '../Services/alert.service';
 import {DataService} from '../Services/data.service';
 import {SharedService} from '../Services/shared.service';
+import {error} from 'selenium-webdriver';
 
 @Component({
   selector: 'app-my-account',
@@ -30,8 +31,18 @@ export class MyAccountComponent implements OnInit, OnDestroy {
       this.shared.changeWishlistValue(array.length);
       console.log('MyAccountComponent - Wishlist - ' + array.length)
       localStorage.setItem('wishlist', JSON.stringify(array.length));
-    }, error => {
-      console.log(error);
+    }, error1 => {
+      console.log(error1);
+    });
+
+    // retrieving cart data once user logs in
+    this.data.retrieve_cart_items().subscribe(items => {
+      const array = items as Array<any>;
+      this.shared.changeCartValue(array.length);
+      console.log('MyAccountComponent - CART - ' + array.length)
+      localStorage.setItem('cart', JSON.stringify(array.length));
+    }, error1 => {
+      console.log(error1);
     });
 
   }

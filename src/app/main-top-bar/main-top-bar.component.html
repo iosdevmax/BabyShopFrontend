@@ -24,7 +24,7 @@
               <i class="flaticon-profile"></i>
               <a id="not-logged" routerLink="/login">Sign In or Create Account</a>
               <div id="logged-in">
-                <a routerLink="/my-account">Hi, {{currentUser.first}}</a>
+                <a routerLink="/my-account">Hi, {{username}}</a>
                 <a (click)="logout()">Log out</a>
               </div>
             </div>
@@ -44,7 +44,7 @@
             <div class="up-item">
               <div class="shopping-card">
                 <i class="flaticon-bag"></i>
-                <span>0</span>
+                <span id="cartcount">0</span>
               </div>
               <a routerLink="/cart">Shopping Cart</a>
             </div>

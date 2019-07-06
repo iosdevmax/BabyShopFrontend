@@ -3,7 +3,9 @@ import { DataService } from '../Services/data.service';
 import {ActivatedRoute, Data} from '@angular/router';
 import { Item } from '../Models/item.model';
 import {log} from 'util';
-import {Convertedsize} from '../Models/convertedsize.model';
+import {SharedService} from '../Services/shared.service';
+import {ItemDetails} from '../Models/item-details.model';
+import {Size} from '../Models/size.model';
 
 @Component({
   selector: 'app-product',
@@ -12,13 +14,13 @@ import {Convertedsize} from '../Models/convertedsize.model';
 })
 export class ProductComponent implements OnInit {
 
-  product: Item;
-  selectedSize: Convertedsize;
+  product?: ItemDetails;
+  selectedSize: Size;
   productId: string;
   loading = false;
-  convertedSizes: Array<Convertedsize>;
+  itemCategory = '';
 
-  constructor(private data: DataService, private router: ActivatedRoute) {
+  constructor(private data: DataService, private router: ActivatedRoute, private shared: SharedService) {
     this.router.params.subscribe(params => {
       this.productId = params.productid;
       console.log('PARAMS ID - ' + params.productid);
@@ -30,81 +32,58 @@ export class ProductComponent implements OnInit {
     this.loading = true;
     this.data.retrieve_item_by_id(this.productId).subscribe(res => {
       this.product = res;
+      this.itemCategory = this.product.cat;
       this.loading = false;
 
-      // need to convert sizes into readable format
-      const sizes = res.sizes;
-      this.convertSizeIntoReadableFormat(sizes);
-
-      console.log('product - ' + res.sizes);
+      console.log('product - ' + res.s);
     });
 
   }
 
   addItemToCart() {
-    this.data.add_item_to_cart(this.product.id, this.selectedSize).subscribe(success => {
+    const input = document.getElementById('quantity-input') as HTMLInputElement;
+
+    const cartObjectDict = {
+      i: {
+        id : this.product.id,
+        n: this.product.n,
+        pr: this.product.pr,
+        q: this.selectedSize.q,
+        img: this.product.ph[0]
+      },
+      s: this.selectedSize.s,
+      q: input.value
+    };
+
+    this.data.add_item_to_cart(cartObjectDict).subscribe(success => {
       console.log('Item in the cart!');
+      this.updateCartCount(this.selectedSize.q);
     }, error1 => {
       console.log('Failed to add item');
     });
 
   }
 
-  private convertSizeIntoReadableFormat(sizes: any) {
-    const arrayOfSizes = [];
-    Object.keys(sizes).forEach(key => {
-      const value = sizes[key];
-      switch (key) {
-        case 'm0_3': {
-          const convertedSize = new Convertedsize(key, '0-3', value);
-          arrayOfSizes.push(convertedSize);
-          break;
-        }
-        case 'm3_6' : {
-          const convertedSize = new Convertedsize(key, '3-6', value);
-          arrayOfSizes.push(convertedSize);
-          break;
-        }
-        case 'm6_9' : {
-          const convertedSize = new Convertedsize(key, '6-9', value);
-          arrayOfSizes.push(convertedSize);
-          break;
-        }
-        case 'm9_12' : {
-          const convertedSize = new Convertedsize(key, '9-12', value);
-          arrayOfSizes.push(convertedSize);
-          break;
-        }
-        case 'm12_18' : {
-          const convertedSize = new Convertedsize(key, '12-18', value);
-          arrayOfSizes.push(convertedSize);
-          break;
-        }
-        case 'na' : {
-          const convertedSize = new Convertedsize(key, 'One size', value);
-          arrayOfSizes.push(convertedSize);
-          break;
-        }
-        default: {
-          break;
-        }
-      }
+  private updateCartCount(quantity: number) {
+    // getting current cart count and updating it
+    let currentCount = JSON.parse(localStorage.getItem('cart')) as number;
+    currentCount = currentCount + quantity;
 
-    });
-    arrayOfSizes.sort((a, b) => parseInt(a.displayLabel, 10) - parseInt(b.displayLabel, 10));
-    this.convertedSizes = arrayOfSizes;
+    // updating local storage with the result and wishlist count icon
+    localStorage.setItem('cart', JSON.stringify(currentCount));
+    this.shared.changeCartValue(currentCount);
   }
 
-  checkIfDisabled(value: number, key: string) {
-    if (value === 0) {
-      const input = document.getElementById('size-' + key) as HTMLInputElement;
-      const parentDiv = document.getElementById('divs-' + key) as HTMLElement;
+  checkIfDisabled(size: Size) {
+    if (size.q === 0) {
+      const input = document.getElementById('size-' + size.s) as HTMLInputElement;
+      const parentDiv = document.getElementById('divs-' + size.s) as HTMLElement;
       input.disabled = true;
       parentDiv.className = 'sc-item disable';
     }
   }
 
-  quantityChanged(size: Convertedsize) {
+  quantityChanged(size: Size) {
     this.selectedSize = size;
     // resetting quantity value
     const input = document.getElementById('quantity-input') as HTMLInputElement;
@@ -121,7 +100,7 @@ export class ProductComponent implements OnInit {
 
     if (value) {
       // incrementing as per available quantity
-      if (num < this.selectedSize.quantity) {
+      if (num < this.selectedSize.q) {
         input.value = String(num + 1);
       }
     } else {

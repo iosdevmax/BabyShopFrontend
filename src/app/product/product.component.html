@@ -14,7 +14,7 @@
     <div class="site-pagination">
       <a href="">Home</a> /
       <a href="">Catalog</a> /
-      <a routerLink="/category/{{product.cat}}">{{product.cat}}</a>
+      <a routerLink="/category/{{product.cat}}" *ngIf="product">{{product.cat}}</a>
     </div>
   </div>
 </div>
@@ -30,9 +30,9 @@
   <div class="container">
 
     <div class="back-link">
-      <a routerLink="/category/{{product.cat}}"> &lt;&lt; Back to Category</a>
+      <a routerLink="/category/{{product.cat}}" *ngIf="product"> &lt;&lt; Back to {{product.cat}}</a>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="product">
       <div class="col-lg-6">
         <div class="product-pic-zoom">
           <img class="product-big-img" src="{{product.ph[0]}}" alt="">
@@ -64,9 +64,9 @@
 
         <div class="fw-size-choose">
           <p>Size</p>
-          <div class="sc-item" id="divs-{{size.label}}" *ngFor="let size of convertedSizes">
-            <input type="radio" name="sc" id="size-{{size.label}}" (change)="quantityChanged(size)">{{checkIfDisabled(size.quantity, size.label)}}
-            <label for="size-{{size.label}}">{{size.displayLabel}}</label>
+          <div class="sc-item" id="divs-{{size.s}}" *ngFor="let size of product.s">
+            <input type="radio" name="sc" id="size-{{size.s}}" (change)="quantityChanged(size)">{{checkIfDisabled(size)}}
+            <label for="size-{{size.s}}">{{size.s}}</label>
           </div>
         </div>
 

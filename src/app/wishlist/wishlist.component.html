@@ -19,7 +19,7 @@
 </div>
 <!-- Page info end -->
 <div class="container">
-  <div class="row">
+  <div class="row" *ngIf="wishlistItems">
     <div *ngFor="let item of wishlistItems; let i = index" class="col-lg-4 col-sm-6">
       <div class="product-item">
 
@@ -27,7 +27,7 @@
           <!--<a routerLink="/product/{{item.id}}">-->
 
           <!--<img src="../assets/img/product/6.jpg" alt="">-->
-          <img src="{{item.ph[0]}}" alt="" >
+          <img src="{{item.img}}" alt="" >
           <div class="pi-links">
             <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
             <a class="wishlist-btn"><i class="flaticon-cancel" (click)="removeFromWishlist(item, i); $event.stopPropagation()"></i></a>

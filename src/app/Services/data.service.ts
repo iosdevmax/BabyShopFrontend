@@ -4,8 +4,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import {Item} from '../Models/item.model';
 import {element} from 'protractor';
-import {Convertedsize} from '../Models/convertedsize.model';
-import {OrderItem} from '../Models/order-item.model';
+import {CartObject} from '../Models/cart-object.model';
 
 const shopURL = 'https://babyshop-43300.firebaseapp.com/api/catalog';
 const userURL = 'https://babyshop-43300.firebaseapp.com/api/user';
@@ -30,10 +29,11 @@ export class DataService {
   private wishlisted: any;
   private wishlisteItems: any;
   private inCartItems: any;
-  private cartItems: Array<OrderItem>;
+  private cartItems: Array<CartObject>;
   private userdata: any;
 
   private updateQtyResponse: any;
+  private removeItemResponse: any;
 
   constructor(private http: HttpClient) { }
 
@@ -65,16 +65,20 @@ export class DataService {
   // cart methods
   // *******************
 
-  add_item_to_cart(itemId: string, size: Convertedsize): Observable<any> {
-    return this.http.put(cartURL + '/' + itemId, {[size.label] : size.quantity}).pipe(map( res => this.inCartItems = res));
+  add_item_to_cart(itemDict: any): Observable<any> {
+    return this.http.put(cartURL + '/item', itemDict).pipe(map( res => this.inCartItems = res));
   }
 
-  retrieve_cart_items(): Observable<Array<OrderItem>> {
-    return this.http.get<Array<OrderItem>>(cartURL + '/data').pipe(map(res => this.cartItems = res));
+  retrieve_cart_items(): Observable<Array<CartObject>> {
+    return this.http.get<Array<CartObject>>(cartURL + '/item').pipe(map(res => this.cartItems = res));
   }
 
-  update_item_quantity(itemId: string, size: string, qty: number): Observable<any> {
-    return this.http.put(cartURL + '/qty/' + itemId, {[size] : qty}).pipe(map(res => this.updateQtyResponse = res));
+  update_item_quantity(itemId: string, body: any, ): Observable<any> {
+    return this.http.put(cartURL + '/item/qty/' + itemId, body).pipe(map(res => this.updateQtyResponse = res));
+  }
+
+  remove_item_from_cart(itemId: String): Observable<any> {
+    return this.http.delete(cartURL + /item/ + itemId).pipe(map(res => this.removeItemResponse = res));
   }
 
   // *******************
