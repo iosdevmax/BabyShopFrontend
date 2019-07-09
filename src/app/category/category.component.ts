@@ -15,8 +15,9 @@ export class CategoryComponent implements OnInit {
 
   categoryName: string;
   items: Item[] = [];
+  sortedItems: Item[] = [];
   loading = false;
-
+  selectedFilters: string[] = []
   initialWishlistSetup = false;
 
   constructor(private router: ActivatedRoute,
@@ -42,6 +43,7 @@ export class CategoryComponent implements OnInit {
 
     this.data.retrieve_items_for_category(this.categoryName).subscribe(res => {
       this.items = res;
+      this.sortedItems = res;
       this.loading = false;
     });
 
@@ -59,15 +61,15 @@ export class CategoryComponent implements OnInit {
       typeLabel.style.display = 'none';
       return;
     }
-    const saleType = item.tp['sale'];
-    const newType = item.tp['new'];
+    const saleType = item.sl;
+    const newType = item.tp.includes('new');
     // if both sale and new is false, hide the label
-    if ((saleType && saleType === false) && (newType && newType === false)) {
+    if ((saleType && saleType === 0) && (newType && newType === true)) {
       typeLabel.style.display = 'none';
       return;
     }
     // if item's type is sale, displaying SALE label
-    if (saleType && saleType === true) {
+    if (saleType && saleType !== 0) {
       typeLabel.style.display = 'block';
       typeLabel.className = 'tag-sale';
       typeLabel.innerHTML = 'SALE';
@@ -142,6 +144,80 @@ export class CategoryComponent implements OnInit {
     // updating local storage with the result and wishlist count icon
     localStorage.setItem('wishlist', JSON.stringify(currentCount));
     this.shared.changeWishlistValue(currentCount);
+  }
+
+  sortElements() {
+    this.loading = true;
+    const x = document.getElementById('select-sort') as HTMLSelectElement;
+    this.sortWithType(x.value);
+  }
+
+  private sortWithType(type: string) {
+
+    switch (type) {
+      case 'New': {
+
+        const newItems = this.items.filter(function (value, index) {
+          return value.tp.includes('new');
+        });
+        const otherItems = this.items.filter(function (value, index) {
+          return !value.tp.includes('new');
+        });
+
+        this.items = newItems.concat(otherItems);
+
+        break;
+      }
+      case 'Recommended': {
+        this.items.sort(function (a, b) {
+          return b.sl - a.sl;
+        });
+        break;
+      }
+      case 'High to low': {
+        this.items.sort(function (a, b) {
+          return b.pr - a.pr;
+        });
+        break;
+      }
+      case 'Low to high': {
+        this.items.sort(function (a, b) {
+          return a.pr - b.pr;
+        });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    this.loading = false;
+
+  }
+
+  filterElements(filter: string) {
+    console.log(filter);
+    if (this.selectedFilters.includes(filter)) {
+      this.selectedFilters =  this.selectedFilters.filter( item => item !== filter);
+    } else {
+      this.selectedFilters.push(filter);
+    }
+    console.log(this.selectedFilters);
+    // exit execution if no size filters selected
+    if (this.selectedFilters.length === 0) {
+      this.sortedItems = this.items;
+      return;
+    }
+
+    this.sortedItems = this.items.filter(i => i.s.some(o => this.selectedFilters.includes(o.s) && o.q !== 0));
+
+    // this.items.filter(function (item, index) {
+    //   item.s.forEach(function (size) {
+    //     return size.s ===
+    //   });
+    //   return item.s.fo
+    // });
+
+
   }
 
   addToCart(item: Item, index: number) {

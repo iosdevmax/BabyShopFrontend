@@ -1010,7 +1010,7 @@ ol {
 ---------------------*/
 
 .footer-section {
-  background: #282828;
+  background: #d8f2fd;
   padding-top: 60px;
 }
 
@@ -1027,7 +1027,7 @@ ol {
   font-size: 18px;
   font-weight: 700;
   text-transform: uppercase;
-  color: #fff;
+  color: #8c8c8c;
   margin-bottom: 45px;
 }
 
@@ -1492,6 +1492,17 @@ ol {
   background: #f51167;
   color: #fff;
 }
+
+.fw-size-choose input[type=checkbox] {
+  visibility: hidden;
+  position: absolute;
+}
+
+.fw-size-choose input[type=checkbox]:checked+label {
+  background: #f51167;
+  color: #fff;
+}
+
 
 /* --------------
   Product page

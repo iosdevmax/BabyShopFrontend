@@ -42,7 +42,9 @@ export class ProductComponent implements OnInit {
 
   addItemToCart() {
     const input = document.getElementById('quantity-input') as HTMLInputElement;
-
+    const errorView = document.getElementById('error-view') as HTMLInputElement;
+    errorView.style.display = 'none';
+    let inputQty = Number(input.value);
     const cartObjectDict = {
       i: {
         id : this.product.id,
@@ -52,12 +54,18 @@ export class ProductComponent implements OnInit {
         img: this.product.ph[0]
       },
       s: this.selectedSize.s,
-      q: input.value
+      q: inputQty
     };
 
     this.data.add_item_to_cart(cartObjectDict).subscribe(success => {
-      console.log('Item in the cart!');
-      this.updateCartCount(this.selectedSize.q);
+      if (success.cart) {
+        console.log('Item in the cart!');
+        this.updateCartCount(inputQty);
+      } else {
+        // if product cannot be added to cart, display alert div
+        errorView.style.display = 'block';
+      }
+
     }, error1 => {
       console.log('Failed to add item');
     });
