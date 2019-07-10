@@ -73,12 +73,14 @@
             <!--</div>-->
 
             <div data-role="main" class="ui-content">
-              <form method="post" action="/action_page_post.php">
+              <form method="post" >
+                <p style="float: left; margin-right: 80%" id="min-label">0</p>
+                <p id="max-label">100</p>
                 <div data-role="rangeslider">
-                  <input type="range" name="price-min" id="price-min" value="0" min="0" max="1000">
-                  <input type="range" name="price-max" id="price-max" value="1000" min="0" max="1000">
+                  <input type="range" name="price-min" id="price-min" value="0" min="0" max="49" (change)="priceValueChanged()">
+                  <input type="range" name="price-max" id="price-max" value="100" min="50" max="100" (change)="priceValueChanged()">
                 </div>
-                <input type="submit" data-inline="true" value="Apply">
+                <input type="submit" data-inline="true" value="Apply" (click)="sortByPrice()">
               </form>
             </div>
 

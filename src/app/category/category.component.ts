@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { Item } from '../Models/item.model';
 import {element} from 'protractor';
 import {SharedService} from '../Services/shared.service';
+import {min} from 'rxjs/operators';
 
 
 @Component({
@@ -45,8 +46,33 @@ export class CategoryComponent implements OnInit {
       this.items = res;
       this.sortedItems = res;
       this.loading = false;
+      this.setMinMaxPrice(res);
     });
 
+  }
+
+  private setMinMaxPrice(items: Item[]) {
+    items.sort( function (a, b) {
+      return a.pr - b.pr;
+    });
+
+    const minPrice = items[0].pr;
+    const maxPrice = items[items.length - 1].pr;
+    const minPriceInput = document.getElementById('price-min') as HTMLInputElement;
+    const minPriceLabel = document.getElementById('min-label');
+
+    const maxPriceInput = document.getElementById('price-max') as HTMLInputElement;
+    const maxPriceLabel = document.getElementById('max-label');
+
+    minPriceInput.value = String(minPrice);
+    minPriceInput.min = String(minPrice);
+    minPriceInput.max = String(maxPrice / 2 - 1);
+    minPriceLabel.innerText = String(minPrice);
+
+    maxPriceInput.value = String(maxPrice);
+    maxPriceInput.min = String(maxPrice / 2);
+    maxPriceInput.max = String(maxPrice);
+    maxPriceLabel.innerText = String(maxPrice);
   }
 
   navigateToProductDetails(item: Item) {
@@ -157,31 +183,31 @@ export class CategoryComponent implements OnInit {
     switch (type) {
       case 'New': {
 
-        const newItems = this.items.filter(function (value, index) {
+        const newItems = this.sortedItems.filter(function (value, index) {
           return value.tp.includes('new');
         });
-        const otherItems = this.items.filter(function (value, index) {
+        const otherItems = this.sortedItems.filter(function (value, index) {
           return !value.tp.includes('new');
         });
 
-        this.items = newItems.concat(otherItems);
+        this.sortedItems = newItems.concat(otherItems);
 
         break;
       }
       case 'Recommended': {
-        this.items.sort(function (a, b) {
+        this.sortedItems.sort(function (a, b) {
           return b.sl - a.sl;
         });
         break;
       }
       case 'High to low': {
-        this.items.sort(function (a, b) {
+        this.sortedItems.sort(function (a, b) {
           return b.pr - a.pr;
         });
         break;
       }
       case 'Low to high': {
-        this.items.sort(function (a, b) {
+        this.sortedItems.sort(function (a, b) {
           return a.pr - b.pr;
         });
         break;
@@ -209,18 +235,32 @@ export class CategoryComponent implements OnInit {
     }
 
     this.sortedItems = this.items.filter(i => i.s.some(o => this.selectedFilters.includes(o.s) && o.q !== 0));
-
-    // this.items.filter(function (item, index) {
-    //   item.s.forEach(function (size) {
-    //     return size.s ===
-    //   });
-    //   return item.s.fo
-    // });
-
-
   }
 
   addToCart(item: Item, index: number) {
+
+  }
+
+  priceValueChanged() {
+    const minPriceInput = document.getElementById('price-min') as HTMLInputElement;
+    const minPriceLabel = document.getElementById('min-label');
+
+    const maxPriceInput = document.getElementById('price-max') as HTMLInputElement;
+    const maxPriceLabel = document.getElementById('max-label');
+
+    minPriceLabel.innerText = minPriceInput.value;
+    maxPriceLabel.innerText = maxPriceInput.value;
+  }
+
+  sortByPrice() {
+    const minPriceInput = document.getElementById('price-min') as HTMLInputElement;
+    const maxPriceInput = document.getElementById('price-max') as HTMLInputElement;
+    let minPrice = Number(minPriceInput.value);
+    let maxPrice = Number(maxPriceInput.value);
+
+    this.sortedItems = this.items.filter( item => item.pr >= minPrice);
+    this.sortedItems = this.items.filter( item => item.pr <= maxPrice);
+
 
   }
 
