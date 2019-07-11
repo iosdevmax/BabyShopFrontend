@@ -4,6 +4,7 @@ import {SharedService} from '../Services/shared.service';
 import {Item} from '../Models/item.model';
 import {element} from 'protractor';
 import {CartObject} from '../Models/cart-object.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -13,9 +14,12 @@ import {CartObject} from '../Models/cart-object.model';
 export class CartComponent implements OnInit {
 
   cartItems: Array<CartObject>;
+  recommendedItems: Array<Item>;
+  initialWishlistSetup = false;
 
   constructor(private data: DataService,
-              private shared: SharedService) {
+              private shared: SharedService, private rout: Router) {
+
     this.data.retrieve_cart_items().subscribe(items => {
       this.cartItems = items;
       // updating local storage with up-to-date info
@@ -24,6 +28,11 @@ export class CartComponent implements OnInit {
       this.shared.changeCartValue(cartCount);
       console.log(items);
     });
+
+    this.data.retrieve_recommended_items().subscribe(recItems => {
+      this.recommendedItems = recItems;
+    });
+
   }
 
   ngOnInit() {
@@ -128,4 +137,108 @@ export class CartComponent implements OnInit {
     this.shared.changeCartValue(currentCount);
   }
 
+  // ****************************
+  // Recommended items methods
+  // ****************************
+
+  navigateToProductDetails(item: Item) {
+    this.rout.navigate(['/product/' + item.id]);
+  }
+
+  setSaleAndNewLabels(item: Item, index: number) {
+
+    const typeLabel = document.getElementById('itemTypeLabel' + index) as HTMLElement;
+    // if item has no type, need to hide the type label
+    if (!item.tp) {
+      typeLabel.style.display = 'none';
+      return;
+    }
+    const saleType = item.sl;
+    const newType = item.tp.includes('new');
+    // if both sale and new is false, hide the label
+    if ((saleType && saleType === 0) && (newType && newType === true)) {
+      typeLabel.style.display = 'none';
+      return;
+    }
+    // if item's type is sale, displaying SALE label
+    if (saleType && saleType !== 0) {
+      typeLabel.style.display = 'block';
+      typeLabel.className = 'tag-sale';
+      typeLabel.innerHTML = 'SALE';
+      return;
+    }
+    // if item's type is new, displaying New label
+    if (newType && newType === true) {
+      typeLabel.style.display = 'block';
+      typeLabel.className = 'tag-new';
+      typeLabel.innerHTML = 'NEW';
+      return;
+    }
+
+  }
+
+  addToCart(item: Item, index: number) {
+
+  }
+
+  addToWishlist(item: Item, index: number) {
+
+    this.data.add_remove_to_wishlist(item).subscribe(result => {
+
+      const wishIcon = document.getElementById('wishlist-icon-' + index);
+      const isAdded = result['wishlist'];
+      if (isAdded) {
+        wishIcon.style.backgroundColor = 'red';
+      } else {
+        wishIcon.style.backgroundColor = 'white';
+      }
+      this.updateWishlistCount(isAdded);
+    });
+  }
+
+  private updateWishlistCount(isAdded: boolean) {
+    // getting current wishlist count and updating it
+    let currentCount = JSON.parse(localStorage.getItem('wishlist')) as number;
+    if (isAdded) {
+      currentCount = currentCount + 1;
+    } else {
+      if (currentCount >= 1) {
+        currentCount = currentCount - 1;
+      }
+    }
+
+    // updating local storage with the result and wishlist count icon
+    localStorage.setItem('wishlist', JSON.stringify(currentCount));
+    this.shared.changeWishlistValue(currentCount);
+  }
+
+  setWishlistIcons(item: Item, index: number) {
+
+    if (this.initialWishlistSetup) {
+      return;
+    }
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    // if current user object is null, it means the user hasn't logged into the website yet
+    // return, as we have no data for the wishlist yet
+    if (!currentUser) {
+      return;
+    }
+
+    const currentUserId = currentUser.userId;
+    const userIds = item.ws;
+    const wishIcon = document.getElementById('wishlist-icon-' + index);
+
+    if (userIds && userIds[currentUserId]) {
+      wishIcon.style.backgroundColor = 'red';
+    } else {
+      wishIcon.style.backgroundColor = 'white';
+    }
+
+    if (index + 1 === this.recommendedItems.length) {
+      this.initialWishlistSetup = true;
+    }
+
+  }
 }

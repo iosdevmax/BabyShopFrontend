@@ -25,6 +25,7 @@ const httpOptions = {
 export class DataService {
 
   private items: any;
+  private recommndedItems: Array<Item>;
   private selectedItem: any;
   private wishlisted: any;
   private wishlisteItems: any;
@@ -47,6 +48,10 @@ export class DataService {
 
   retrieve_item_by_id(id: string): Observable<any> {
     return this.http.get(shopURL + '/item/' + id).pipe(map(res => this.selectedItem = res));
+  }
+
+  retrieve_recommended_items(): Observable<Array<Item>> {
+    return this.http.get<Array<Item>>(shopURL + '/recommended').pipe(map(res => this.recommndedItems = res));
   }
 
   // *******************

@@ -193,7 +193,6 @@
 
               <div class="pi-pic" (click)="navigateToProductDetails(item)">
                 <div id="itemTypeLabel{{i}}">{{setSaleAndNewLabels(item, i)}}</div>
-                <!--<img src="../assets/img/product/6.jpg" alt="">-->
                 <img src="{{item.img}}" alt="" >
                 <div class="pi-links">
                   <a class="add-card"><i class="flaticon-bag" (click)="addToCart(item, i); $event.stopPropagation()"></i><span>ADD TO CART</span></a>
