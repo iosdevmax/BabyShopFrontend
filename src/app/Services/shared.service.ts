@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
+import {CartObject} from '../Models/cart-object.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
+
+  orderItems: Array<CartObject>;
 
   // observable value to update wishlist icon count
   private wishlistValueSource = new BehaviorSubject<number>( null);

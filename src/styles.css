@@ -2038,6 +2038,11 @@ ol {
   padding-left: 40px;
 }
 
+.payment-list input[type=radio] {
+  visibility: visible;
+  position: absolute;
+}
+
 .submit-order-btn {
   width: 100%;
   min-height: 58px;
@@ -2070,16 +2075,17 @@ ol {
   overflow: hidden;
   margin-right: 22px;
   width: 99px;
+  height: 99px;
 }
 
 .checkout-cart .product-list .pl-thumb img {
   min-width: 100%;
+
 }
 
 .checkout-cart .product-list h6 {
   font-weight: 700;
   color: #414141;
-  padding-top: 15px;
   margin-bottom: 5px;
 }
 

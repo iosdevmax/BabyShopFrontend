@@ -78,7 +78,7 @@
             <div class="col-6">
               <div class="cf-radio-btns">
                 <div class="cfr-item">
-                  <input type="radio" name="shipping" id="express" (change)="handleChange($event)">
+                  <input type="radio" name="shipping" id="express" (change)="handleDeliveryChange($event)">
                   <label for="express">€10.00</label>
                 </div>
               </div>
@@ -87,50 +87,59 @@
 
           <div class="cf-title">Payment</div>
           <ul class="payment-list">
-            <li>Paypal<a href="#"><img src="./assets/img/paypal.png" alt=""></a></li>
-            <li>Credit / Debit card<a href="#"><img src="./assets/img/mastercart.png" alt=""></a></li>
+            <li>Paypal<img src="./assets/img/paypal.png" alt="">
+              <input type="radio" name="payment" id="paypal" (change)="handlePaymentChange($event)" checked>
+            </li>
+            <li>Credit / Debit card<img src="./assets/img/mastercart.png" alt="">
+              <input type="radio" name="payment" id="card" (change)="handlePaymentChange($event)">
+            </li>
           </ul>
+
+          <div class="container" id="card-details">
+            <div class="form-group">
+              <label for="firstname">*First name</label>
+              <input type="firstname" class="form-control" id="firstname" name="firstname">
+            </div>
+            <div class="form-group">
+              <label for="lastname">*Last name</label>
+              <input type="lastname" class="form-control" id="lastname" name="lastname">
+            </div>
+            <div class="form-group">
+              <label for="cardnumber">*Card number</label>
+              <input type="cardnumber" class="form-control" id="cardnumber" name="cardnumber">
+            </div>
+            <div class="form-group">
+              <label for="expiry">*Expiry date</label>
+              <input type="expiry" class="form-control" id="expiry" name="expiry">
+            </div>
+            <div class="form-group">
+              <label for="cvv">*CVV</label>
+              <input type="cvv" class="form-control" id="cvv" name="cvv">
+            </div>
+          </div>
+
           <button class="site-btn submit-order-btn">Place Order</button>
         </form>
       </div>
 
       <div class="col-lg-4 order-1 order-lg-2">
-        <div class="checkout-cart">
+        <div *ngIf="cartItems" class="checkout-cart">
           <h4>Your Order</h4>
-          <h6>4 items</h6>
+          <h6>{{cartItems.length}} items</h6>
           <ul class="product-list">
-            <li>
-              <div class="pl-thumb"><img src="/assets/img/cart/1.jpg" alt=""></div>
-              <h6>Animal Print Dress</h6>
-              <p>$45.90</p>
-            </li>
-            <li>
-              <div class="pl-thumb"><img src="./assets/img/cart/2.jpg" alt=""></div>
-              <h6>Animal Print Dress</h6>
-              <p>$45.90</p>
-            </li>
-            <li>
-              <div class="pl-thumb"><img src="./assets/img/cart/2.jpg" alt=""></div>
-              <h6>Animal Print Dress</h6>
-              <p>$45.90</p>
-            </li>
-            <li>
-              <div class="pl-thumb"><img src="./assets/img/cart/2.jpg" alt=""></div>
-              <h6>Animal Print Dress</h6>
-              <p>$45.90</p>
-            </li>
-            <li>
-              <div class="pl-thumb"><img src="./assets/img/cart/2.jpg" alt=""></div>
-              <h6>Animal Print Dress</h6>
-              <p>$45.90</p>
+            <li *ngFor="let item of cartItems">
+              <div class="pl-thumb"><img src="{{item.i.img}}" alt=""></div>
+              <h6>€{{item.i.pr}}</h6>
+              <p>{{item.i.n}}</p>
+              <p>Size: {{item.s}}</p>
+              <p>Q-ty: {{item.q}}</p>
             </li>
           </ul>
 
-
           <ul class="price-list">
-            <li>Total<span>$99.90</span></li>
-            <li>Shipping<span id="shipping-amount">€5.00</span></li>
-            <li class="total">Total<span >$99.90</span></li>
+            <li>Total<span id="pre-sum">€0.00</span></li>
+            <li>Shipping<span id="shipping-amount">€5</span></li>
+            <li class="total">Total<span id="total-sum" >€0.00</span></li>
           </ul>
 
         </div>

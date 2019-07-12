@@ -137,6 +137,11 @@ export class CartComponent implements OnInit {
     this.shared.changeCartValue(currentCount);
   }
 
+  proceedToCheckout() {
+    this.shared.orderItems = this.cartItems;
+  }
+
+
   // ****************************
   // Recommended items methods
   // ****************************
