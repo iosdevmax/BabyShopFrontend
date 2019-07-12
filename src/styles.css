@@ -2049,16 +2049,18 @@ ol {
   border-radius: 25px;
 }
 
-.checkout-cart h3 {
+.checkout-cart h3, h4 {
   margin-bottom: 30px;
 }
 
 .checkout-cart .product-list {
   list-style: none;
+  height: 250px;
+  overflow: auto;
 }
 
 .checkout-cart .product-list li {
-  overflow: hidden;
+  overflow: auto;
   display: block;
   margin-bottom: 29px;
 }
